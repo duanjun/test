@@ -11,24 +11,24 @@ require 'lib/grit'
 
 def main
   @wbare = File.expand_path(File.join('test', 'dot_git'))
-  
+
   in_temp_dir do
     #result = RubyProf.profile do
 
       git = Grit::Repo.new('.')
       puts Grit::VERSION
-      
+
       Grit::GitRuby.use_commit_db = true
       #Grit::GitRuby.cache_client = MemCache.new 'localhost:11211', :namespace => 'grit'
       #Grit.debug = true
-    
-      #pp Grit::GitRuby.cache_client.stats 
-    
+
+      #pp Grit::GitRuby.cache_client.stats
+
       commit1 = '5e3ee1198672257164ce3fe31dea3e40848e68d5'
       commit2 = 'ca8a30f5a7f0f163bbe3b6f0abf18a6c83b0687a'
-    
+
       Benchmark.bm(8) do |x|
-            
+
         run_code(x, 'packobj') do
           @commit = git.commit('5e3ee1198672257164ce3fe31dea3e40848e68d5')
           @tree = git.tree('cd7422af5a2e0fff3e94d6fb1a8fff03b2841881')
@@ -39,7 +39,7 @@ def main
         run_code(x, 'commits 1') do
           git.commits.size
         end
-              
+
         run_code(x, 'commits 2') do
           log = git.commits('master', 15)
           log.size
@@ -86,7 +86,7 @@ def main
 
     #printer = RubyProf::FlatPrinter.new(result)
     #printer.print(STDOUT, 0)
-    
+
   end
 
 
@@ -99,9 +99,9 @@ def run_code(x, name, times = 30)
         yield i
       end
     end
-  
+
   #end
-  
+
   # Print a graph profile to text
 end
 
@@ -126,5 +126,4 @@ end
 
 main()
 
-##pp Grit::GitRuby.cache_client.stats 
-"test line" 
+##pp Grit::GitRuby.cache_client.stats
